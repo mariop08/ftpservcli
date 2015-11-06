@@ -37,61 +37,55 @@ print currentSystem
 
 # Accept connections forever
 while True:
-	
-	print "Waiting for connections..."
-		
-	# Accept connections
-	clientSock, addr = welcomeSock.accept()
-	
-	print "Accepted connection from client: ", addr
-	print "\n"
+    print "Waiting for connections..."
 
-	clientSock.send("Connection has been established")
-	
-	# The buffer to all data received from the
-	# the client.
-	fileData = ""
-	
-	# The temporary buffer to store the received
-	# data.
-	recvBuff = ""
-	
-	# The size of the incoming file
-	fileSize = 0	
-	
-	# The buffer containing the file size
-	fileSizeBuff = ""
-	
-	# Receive the first 10 bytes indicating the
-	# size of the file
-	fileSizeBuff = rec_all(clientSock, 10)
+    # Accept connections
+    clientSock, addr = welcomeSock.accept()
 
-   	 # Recive the second 10 bytes indicating file name size
-    fileNameSizeBuff = rec_all(clientSock, 10)
-		
-	# Get the file size
-	fileSize = int(fileSizeBuff)
+    print "Accepted connection from client: ", addr
+    print "\n"
 
-   	# Get the file name size
-    fileNameSize = int(fileNameSizeBuff)
+    clientSock.send("Connection has been established")
 
-	# Recieve the file name based on size of string
-	fileName = rec_all(clientSock, fileNameSize);
+    # The buffer to all data received from the
+    # the client.
+    fileData = ""
 
-	print fileName
+    # The temporary buffer to store the received
+    # data.
+    recvBuff = ""
 
-        # Open file to write to
-	f = open("Copy" + fileName, 'wb')
-	
-	# Get the file data
-	fileData = rec_all(clientSock, fileSize)
+    # The size of the incoming file
+    fileSize = 0
 
-	#Create File
-	f.write(fileData)
-	f.close()
-	
-	print "Transfer complete"	
-	
-	# Close our side
-	clientSock.close()
-	
+    # The buffer containing the file size
+    fileSizeBuff = ""
+
+    # Receive the first 10 bytes indicating the
+    # size of the file
+    fileSizeBuff = rec_all(clientSock, 10)
+
+    # Recive the second 10 bytes indicating file name size
+fileNameSizeBuff = rec_all(clientSock, 10)  # Get the file size
+fileSize = int(fileSizeBuff)
+
+# Get the file name size
+fileNameSize = int(fileNameSizeBuff)  # Recieve the file name based on size of string
+fileName = rec_all(clientSock, fileNameSize);
+
+print fileName
+
+# Open file to write to
+f = open("Copy" + fileName, 'wb')
+
+# Get the file data
+fileData = rec_all(clientSock, fileSize)
+
+# Create File
+f.write(fileData)
+f.close()
+
+print "Transfer complete"
+
+# Close our side
+clientSock.close()
